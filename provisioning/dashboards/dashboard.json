@@ -49,7 +49,7 @@
         }
       ],
       "title": "Panel Title",
-      "type": "frederikmartin-statussaga-panel"
+      "type": "status-saga"
     }
   ],
   "refresh": "",

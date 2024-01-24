@@ -1,12 +1,10 @@
-# Grafana panel plugin template
+# Status Saga Grafana Visualization Panel Plugin
 
-This template is a starting point for building a panel plugin for Grafana.
+## Disclaimer
 
-## What are Grafana panel plugins?
+Basically a copy of the official plugin named [Status history](https://github.com/grafana/grafana/tree/d8c96b4406d374abbdaa349fa81469efbf48c16e/public/app/plugins/panel/status-history) with some optimizations.
 
-Panel plugins allow you to add new types of visualizations to your dashboard, such as maps, clocks, pie charts, lists, and more.
-
-Use panel plugins when you want to do things like visualize data returned by data source queries, navigate between dashboards, or control external systems (such as smart home devices).
+Purpose is to learn how to build Grafana plugins and adjust the existing status plugin for my needs. This may result in oss contribution one day ¯\_(ツ)_/¯
 
 ## Getting started
 

@@ -1,19 +1,24 @@
 {
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
   "type": "panel",
-  "name": "Status Saga",
-  "id": "frederikmartin-statussaga-panel",
+  "name": "Status saga",
+  "id": "status-saga",
   "info": {
     "keywords": ["panel"],
     "description": "Grafana status history on steroids",
     "author": {
-      "name": "Frederikmartin"
+      "name": "Frederik Martin"
     },
     "logos": {
       "small": "img/logo.svg",
       "large": "img/logo.svg"
     },
-    "links": [],
+    "links": [
+      {
+        "name": "GitHub",
+        "url": "https://github.com/frederikmartin/status-saga"
+      }
+    ],
     "screenshots": [],
     "version": "%VERSION%",
     "updated": "%TODAY%"

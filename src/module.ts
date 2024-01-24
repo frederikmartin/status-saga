@@ -1,40 +1,86 @@
-import { PanelPlugin } from '@grafana/data';
-import { SimpleOptions } from './types';
-import { SimplePanel } from './components/SimplePanel';
+import { FieldColorModeId, FieldConfigProperty, PanelPlugin } from '@grafana/data'
+import { VisibilityMode } from '@grafana/schema'
+import { commonOptionsBuilder } from '@grafana/ui'
 
-export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOptions((builder) => {
-  return builder
-    .addTextInput({
-      path: 'text',
-      name: 'Simple text option',
-      description: 'Description of panel option',
-      defaultValue: 'Default value of text input option',
-    })
-    .addBooleanSwitch({
-      path: 'showSeriesCount',
-      name: 'Show series counter',
-      defaultValue: false,
-    })
-    .addRadio({
-      path: 'seriesCountSize',
-      defaultValue: 'sm',
-      name: 'Series counter size',
-      settings: {
-        options: [
-          {
-            value: 'sm',
-            label: 'Small',
+import { StatusSagaPanel } from './components/StatusSagaPanel'
+import { Options, FieldConfig, defaultFieldConfig } from './types'
+import { StatusSagaSuggestionsSupplier } from './utils/suggestions'
+
+export const plugin = new PanelPlugin<Options, FieldConfig>(StatusSagaPanel)
+    .useFieldConfig({
+      standardOptions: {
+        [FieldConfigProperty.Color]: {
+          settings: {
+            byValueSupport: true,
           },
-          {
-            value: 'md',
-            label: 'Medium',
+          defaultValue: {
+            mode: FieldColorModeId.Thresholds,
           },
-          {
-            value: 'lg',
-            label: 'Large',
-          },
-        ],
+        },
       },
-      showIf: (config) => config.showSeriesCount,
-    });
-});
+      useCustomConfig: (builder) => {
+        builder
+            .addSliderInput({
+              path: 'lineWidth',
+              name: 'Line width',
+              defaultValue: defaultFieldConfig.lineWidth,
+              settings: {
+                min: 0,
+                max: 10,
+                step: 1,
+              },
+            })
+            .addSliderInput({
+              path: 'fillOpacity',
+              name: 'Fill opacity',
+              defaultValue: defaultFieldConfig.fillOpacity,
+              settings: {
+                min: 0,
+                max: 100,
+                step: 1,
+              },
+            })
+
+        commonOptionsBuilder.addHideFrom(builder)
+      },
+    })
+    .setPanelOptions((builder) => {
+      builder
+          .addRadio({
+            path: 'showValue',
+            name: 'Show values',
+            settings: {
+              options: [
+                { value: VisibilityMode.Auto, label: 'Auto' },
+                { value: VisibilityMode.Always, label: 'Always' },
+                { value: VisibilityMode.Never, label: 'Never' },
+              ],
+            },
+            defaultValue: VisibilityMode.Auto,
+          })
+          .addSliderInput({
+            path: 'rowHeight',
+            name: 'Row height',
+            defaultValue: 0.9,
+            settings: {
+              min: 0,
+              max: 1,
+              step: 0.01,
+            },
+          })
+          .addSliderInput({
+            path: 'colWidth',
+            name: 'Column width',
+            defaultValue: 0.9,
+            settings: {
+              min: 0,
+              max: 1,
+              step: 0.01,
+            },
+          })
+
+      commonOptionsBuilder.addLegendOptions(builder, false)
+      commonOptionsBuilder.addTooltipOptions(builder, true)
+    })
+    .setSuggestionsSupplier(new StatusSagaSuggestionsSupplier())
+    .setDataSupport({ annotations: true })
